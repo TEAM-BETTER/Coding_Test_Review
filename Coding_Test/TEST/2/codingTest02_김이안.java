@@ -1,6 +1,4 @@
-import java.util.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Solution {
     public int[] solution(int []arr) {
@@ -9,11 +7,11 @@ public class Solution {
             if (arr[i-1] == arr[i]){
                 arr[i-1] = -1;
             }
-        }
+        }   // 배열 arr에서 전인덱스와 현인덱스가 같으면 전인덱스의 값을 -1로 초기화
         for(int num : arr){
             if(num == -1) continue;
             list.add(num);
-        }
+        }   // -1인 인덱스를 제외한 값을 리스트에 추가
         return list.stream().mapToInt(Integer::valueOf).toArray();
     }
 }
