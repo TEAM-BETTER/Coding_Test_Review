@@ -12,7 +12,7 @@ class Solution {
                 int left = 0;
                 int right = temp.length() - 1;
                 boolean isMatch = true;
-
+   
                 // ex) 현재 수의 대칭되는 위치에 있는 수들을 비교 ex) 11 -> 1, 1  1001 -> 1, 1 비교 0, 0 비교
                 while (left < right) {
                     // 1011 -> 1, 1 비교 조건을 만족하지 않기에 else문 실행, 실행 후 0, 1을 비교 일치하지 않는 조건을 만족 if문 실행
