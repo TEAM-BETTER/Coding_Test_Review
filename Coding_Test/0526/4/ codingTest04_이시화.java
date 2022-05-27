@@ -8,7 +8,7 @@ public class Solution {
 
         for (int k = 0; k < n; k++) {                         // 테이블 확인 할수 있는 for 문입니다. 정답과 상관 없습니다.
             for (int l = 0; l < n; l++) {                     // 하지만 효율성 테스트를 확인 해 볼 수 있습니다.
-                System.out.printf("%02d ",table[k][l]);       // 22 번째 if 문을 주석처리하고 돌리면 모든 테이블이 채워지지만
+                System.out.printf("%02d ", table[k][l]);       // 22 번째 if 문을 주석처리하고 돌리면 모든 테이블이 채워지지만
             }                                                 // 저 22번째 if 문을 넣음으로써 i,j 가 속한 가장 작은 테이블만 채워집니다.
             System.out.println();                             // 시험 때는 이걸 생각못해서 효율성 테스트를 모두 통과하지 못했습니다.
         }
@@ -51,12 +51,6 @@ public class Solution {
 
         return nextStart;
     }
-
-    public static void main(String[] args) {
-
-
-//        모든 숫자를 출력해 보시려면 22번째 if 문을 주석처리하고 돌리면 나옵니다
-//        아니면 타겟으로한ㄴ ij가 있는 가장 작은 사각형에 숫자만 나오고 다른 곳은 다 00 으로 출력됩니다
-        System.out.println("table[i][j] = " + solution(8, 5, 2));
-    }
+    //        모든 숫자를 출력해 보시려면 22번째 if 문을 주석처리하고 돌리면 나옵니다
+//        아니면 타겟으로한 ij가 있는 가장 작은 사각형에 숫자만 나오고 다른 곳은 다 00 으로 출력됩니다
 }

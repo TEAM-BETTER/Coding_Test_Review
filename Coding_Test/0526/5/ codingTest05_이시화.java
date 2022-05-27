@@ -120,10 +120,4 @@ public class Solution {
 
         return result;
     }
-
-    public static void main(String[] args) {
-        int[] capacity = {2, 2, 1};
-
-        System.out.println(solution(3, 3, 3, capacity));
-    }
 }

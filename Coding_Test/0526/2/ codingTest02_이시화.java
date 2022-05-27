@@ -34,10 +34,4 @@ public class Solution {
 
         return result;
     }
-
-    public static void main(String[] args) {
-        String[] names = {"제로", "제로", "제로", "제로", "제로", "제로", "베이스", "화이팅", "조예진"};
-
-        System.out.println(solution(names));
-    }
 }
