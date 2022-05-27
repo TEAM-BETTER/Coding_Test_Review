@@ -4,7 +4,7 @@ class Solution {
         long answer = 0;
 
         if (M == 3) { //시험실이 3개인 경우
-            for (int i = 0; i <= capacity[0]; i++) {
+            for (int i = 0; i <= capacity[0]; i++) { //각 시험실의 학생 숫자를 늘려가며 학생 정원에 도달할때, 경우의 수 계산
                 for (int j = 0; j <= capacity[1]; j++) {
                     for (int k = 0; k <= capacity[2]; k++) {
                         if (i + j + k == N) //시험실에 학생을 채우지 않는 경우의수를 고려하여 다음과 같은 식 구성, 식의 경우, 문제에 나타난 풀이법 참고하였음
