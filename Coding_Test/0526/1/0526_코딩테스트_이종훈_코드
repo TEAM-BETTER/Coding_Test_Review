@@ -1,0 +1,25 @@
+
+// 소수 개수 구하기
+
+public class Solution {
+
+    public int solution(int n) {
+        int answer = 0;
+
+        for (int i = 2; i < n; i++) {
+            answer++;
+            for (int j = 2; j < i; j++) {
+                if (i % j == 0) {
+                    answer--;
+                    break;
+                }
+            }
+        }
+        System.out.println(answer);
+
+
+        return answer;
+    }
+
+
+}
