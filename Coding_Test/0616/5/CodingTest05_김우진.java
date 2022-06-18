@@ -7,16 +7,16 @@ package CodingTest4;
  * 4. 키포인트의 개수를 모르므로 일단 temp 배열의 크기를 좌표 범위만큼 지정
  * 5. 해당 범위 내 각 좌표마다 가장 높은 높이를 maxHeights 배열에 저장
  * 6. 제일 처음 키포인트와 마지막 키포인트는 고정
- *      제일 처음 키포인트: 제일 왼쪽 좌표의 가장 높은 높이가 첫 번쨰 키 포인트
- *      제일 마지막 키포인트: 제일 오른쪽 좌표와 높이 0이 마지막 키포인트
+ * 제일 처음 키포인트: 제일 왼쪽 좌표의 가장 높은 높이가 첫 번쨰 키 포인트
+ * 제일 마지막 키포인트: 제일 오른쪽 좌표와 높이 0이 마지막 키포인트
  * 7. 두 번째부터 마지막에서 두 번쨰 키포인트는 아래와 같이 구함
- *      제일 왼쪽에서 두 번쨰 좌표부터 마지막에서 두 번째 좌표까지 순회하면서
- *      직전 키포인트의 높이를 저장한 pastHeight 변수와 다음 좌표의 높이를 비교
- *      pastHeight 값이 다음 좌표의 높이와 같으면 pass
- *      pastHeight 값이 다음 좌표의 높이보다 작을 경우 다음 좌표와 다음 좌표의 높이가 키포인트
- *      pastHeigth 값이 다음 좌표의 높이보다 클 경우 현재 좌표와 다음 좌표의 높이가 키포인트
+ * 제일 왼쪽에서 두 번쨰 좌표부터 마지막에서 두 번째 좌표까지 순회하면서
+ * 직전 키포인트의 높이를 저장한 pastHeight 변수와 다음 좌표의 높이를 비교
+ * pastHeight 값이 다음 좌표의 높이와 같으면 pass
+ * pastHeight 값이 다음 좌표의 높이보다 작을 경우 다음 좌표와 다음 좌표의 높이가 키포인트
+ * pastHeigth 값이 다음 좌표의 높이보다 클 경우 현재 좌표와 다음 좌표의 높이가 키포인트
  * 8. 6, 7번 과정을 통해 키포인트를 모두 구했고 개수는 idx
- *      따라서, answer 배열의 크기를 idx로 지정하고 temp 값들을 answer 배열로 옮기고 return
+ * 따라서, answer 배열의 크기를 idx로 지정하고 temp 값들을 answer 배열로 옮기고 return
  */
 class CodingTest05_김우진 {
 
@@ -61,6 +61,9 @@ class CodingTest05_김우진 {
          * ii) 직전 키포인트보다 좌표의 높이가 낮을 경우 현재 좌표와 다음 높이를 키포인트로 지정
          */
         for (int i = minLeft; i < maxRight; i++) {
+            if (pastHeight == maxHeights[i + 1]) {
+                continue;
+            }
             if (pastHeight < maxHeights[i + 1]) {
                 temp[idx][0] = i + 1;
             } else if (pastHeight > maxHeights[i + 1]) {
