@@ -21,7 +21,6 @@ class Solution {
           // answer = 해당 값을 넣어주고 만들 길이를 늘려야 하기 때문에 left = mid + 1을 해줌
           // 그게 아니라면 만들 길이를 줄여야 하기 때문에 right - 1을 해줌
           if (count >= N) {
-            // answer은 중간 값을 넣어주고
               answer = mid;
               left = mid + 1;
           } else right = mid - 1;
