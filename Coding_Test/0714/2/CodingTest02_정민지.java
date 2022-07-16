@@ -7,6 +7,7 @@
 class Solution {
     public int solution(int depth, int n, int[][] blocks) {
         int answer = 0;
+        test
         return answer;
     }
 }
