@@ -1,35 +1,36 @@
 class Solution {
-    static int totalEnergy = 0;
 
     public int solution(int depth, int n, int[][] blocks) {
 
-        totalEnergy += blocks[depth][n]; // 전체 에너지의 합
+             int[][] dp = new int[2][blocks[0].length];
 
-        int minEnergy = Integer.MAX_VALUE;
 
-        int N = 0;
+        for (int i = 0; i < dp[0].length; i++) {
+            dp[0][i] = blocks[0][i];
+        }
 
-        for (int i = n-1; i <= n+1; i++) { // 각 depth행에서 가장 작은 값이 들어있는 열을 찾는 for문입니다.
-            if (depth > 0) {
-                if (i <= blocks[depth - 1].length - 1 && i > -1) {
-                    if (blocks[depth - 1][i] < minEnergy) {
-                        minEnergy = blocks[depth - 1][i];
-                        N = i;
-                    }
-                }
-            } else {
-                if (i <= blocks[depth].length - 1 && i > -1) {
-                    if (blocks[depth][i] < minEnergy) {
-                        minEnergy = blocks[depth][i];
-                    }
+
+        if (depth == 0) {
+            return blocks[0][n];
+        }
+
+
+        for (int i = 1; i <= depth; i++) {
+            for (int j = 0; j < blocks[0].length; j++) {
+                if (j-1 < 0) {
+                    dp[1][j] = Math.min(dp[0][j], dp[0][j+1]) + blocks[i][j];
+                } else if (j+1 > dp[0].length - 1) {
+                    dp[1][j] = Math.min(dp[0][j], dp[0][j-1]) + blocks[i][j];
+                } else {
+                    dp[1][j] = Math.min(dp[0][j], Math.min(dp[0][j+1], dp[0][j-1])) + blocks[i][j];
                 }
             }
+            dp[0][0] = dp[1][0];
+            dp[0][1] = dp[1][1];
+            dp[0][2] = dp[1][2];
+            dp[0][3] = dp[1][3];
         }
-        
-        if (depth != 0) {
-            solution(depth - 1, N, blocks); // 맨 아래에서부터 depth를 1씩 줄이면서 재귀함수 돌렸습니다.
-        }
-        return totalEnergy;
+        return dp[1][n];
     }
 
 
