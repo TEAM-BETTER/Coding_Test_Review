@@ -13,35 +13,52 @@ class Solution {
     int count;
 
     public int solution(int[][] maze) {
-        int count = 0;
-        int row = 0, col = 0;
-        int[] dirs = { 0, 1, 0 };
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[] { row, col, keyCheck(row, col, maze) });
-        while (!q.isEmpty()) {
-            int[] pos = q.poll();
-            int key = pos[2];
-            if (pos[0] == maze.length - 1 && pos[1] == maze[0].length - 1 && pos[2] != 0) {
-                count++;
-            }
-            for (int i = 1; i < dirs.length; i++) {
-                int nRow = pos[0] + dirs[i - 1];
-                int nCol = pos[1] + dirs[i];
-                if (0 <= nRow && 0 <= nCol && nRow < maze.length && nCol < maze[0].length && maze[nRow][nCol] != 1) {
-                    if (key == 2) {
-                        q.add(new int[] { nRow, nCol, key });
-                    } else {
-                        q.add(new int[] { nRow, nCol, keyCheck(nRow, nCol, maze) });
-                    }
+        int m = maze.length;
+        int n = maze[0].length;
+        int[] key = null;
+        loop: for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (maze[i][j] == 2) {
+                    key = new int[] { i, j };
+                    break loop;
                 }
             }
         }
-        return count % 1007;
+        if (kep == nul)
+            return 0;
+        // to key
+        int toKey = fromTo(new int[] { 0, 0 }, key, 1, maze);
+        // to end
+        return fromTo(key, new int[] { m - 1, n - 1 }, start, maze);
     }
 
-    public int keyCheck(int row, int col, int[][] maze) {
-        if (maze[row][col] == 2)
-            return 2;
-        return 0;
+    public int fromTo(int[] a, int[] b, int start, int[][] maze) {
+        int m = b[0] - a[0] + 1;
+        int n = b[1] - a[1] + 1;
+        int[][] dp = new int[m][n];
+        // row
+        for (int i = 0; i < dp.length; i++) {
+            if (maze[a[0]][a[1] + i] == 1)
+                break;
+            dp[0][i] = start;
+        }
+        // col
+        for (int i = 0; i < dp.length; i++) {
+            if (maze[a[0] + i][a[1]] == 1)
+                break;
+            dp[i][0] = start;
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (maze[a[0] + i][a[1] + j] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % 1007;
+                }
+            }
+        }
+
+        return dp[m + 1][n + 1];
     }
 }
