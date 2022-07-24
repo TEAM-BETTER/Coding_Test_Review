@@ -1,66 +1,72 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
+
+
 class Node {
     int to;
-    int time;
+    int price;
+    int count;
 
-    public Node(int to, int time) {
+    public Node(int to, int price, int count) {
         this.to = to;
-        this.time = time;
+        this.price = price;
+        this.count = count;
     }
 }
-class Solution2 {
 
-    public int solution(int N, int[][] friend, int[][] time) {
+class CodingTest02_임요한 {
+    public int solution(int N, int[][] flight, int a, int b, int k) {
         ArrayList<ArrayList<Node>> list = new ArrayList<ArrayList<Node>>();
         for (int i = 0; i < N; i++) {
             list.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < friend.length; i++) {
-            for (int j = 0; j < friend[i].length; j++) {
-                list.get(i).add(new Node(friend[i][j], time[i][j]));
-            }
+        for (int i = 0; i < flight.length; i++) {
+            list.get(flight[i][0]).add(new Node(flight[i][1], flight[i][2], 0));
         }
 
-        int[] dist = new int[N];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[0] = 0;
+        PriorityQueue<Node> pq = new PriorityQueue<>((x, y) -> x.price - y.price);
+        pq.offer(new Node(a, 0, 0));
 
-        PriorityQueue<Node> pq = new PriorityQueue<>((x, y) -> x.time - y.time);
-        pq.offer(new Node(0, 0));
+
+        int[] dist = new int[N];
+
+        Arrays.fill(dist, Integer.MAX_VALUE);
+
+        dist[a] = 0;
 
         while (!pq.isEmpty()) {
             Node curNode = pq.poll();
+
+            if (curNode.count <= k && curNode.to == b) {
+                return curNode.price;
+            // 현재 노드가 b면서 count가 k 이하면 바로 리턴. (우선순위 큐 특성상 이 조건을 만족하는 price가 최상단에 있으므로)
+            }
+            if (curNode.count > k) {
+                continue;
+            }
+
             for (int i = 0; i < list.get(curNode.to).size(); i++) {
                 Node adjNode = list.get(curNode.to).get(i);
-                if (dist[adjNode.to] > dist[curNode.to] + adjNode.time) {
-                    dist[adjNode.to] = dist[curNode.to] + adjNode.time;
-                    pq.offer(new Node(adjNode.to, dist[adjNode.to]));
+                if (dist[adjNode.to] > curNode.price + adjNode.price) {
+                    dist[adjNode.to] = curNode.price + adjNode.price;
+                    pq.offer(new Node(adjNode.to, dist[adjNode.to], curNode.count + 1));
                 }
             }
+
         }
-
-        boolean isAllFriend = true;
-
-        for (int i = 0; i < dist.length; i++) {
-            if (dist[i] == Integer.MAX_VALUE) {
-                isAllFriend = false;
-            }
-        }
-
-        return isAllFriend  ? Arrays.stream(dist).max().getAsInt() : -1;
-
+        return -1;
     }
 
+
     public static void main(String[] args) {
-        int N = 5;
+        int N = 4;
+        int[][] flight = {{0,1,1}, {1,2,20}, {1,0,8}, {2,0,1}, {0,2,3}};
+        int a = 1;
+        int b = 3;
+        int k = 2;
 
-        int[][] friend = {{1, 4}, {2, 3}, {4}, {1}, {0, 2}};
-
-        int[][] time = {{5, 2}, {6, 4}, {9}, {1}, {2, 6}};
-
-        System.out.println(new Solution2().solution(N, friend, time));
+        System.out.println(new CodingTest02_임요한().solution(N, flight, a, b, k));
     }
 }
