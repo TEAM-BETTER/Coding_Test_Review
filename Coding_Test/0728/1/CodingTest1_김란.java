@@ -19,7 +19,7 @@ public class Test1 {
         // map 만들기
         for(int i = 0; i < 10; ++i){
             star(i);
-        }
+        }  
 
         // n을 한 글자씩 읽어서 바꾸고 이어 붙이고 옆에를 이어 나간다.
         String str = String.valueOf(n);
