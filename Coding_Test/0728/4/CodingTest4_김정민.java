@@ -1,41 +1,41 @@
+import java.util.Stack;
+
 /*
-*  앞자리에 있는 숫자를 뒤에 있는 숫자중 가장 큰 숫자로 바꿔주면 된다고 생각하고 풀이 했습니다.
-*  가장 큰 숫자는 가장 작은 자리 수 부터 탐색을 진행 했습니다.
+*  문제를 보고 DFS라고 생각했습니다.
+*  제한시간이 빡빡하다면 통과하기 힘들 수 도 있을거 같아요 ㅠㅠ
 * */
 class Solution {
-    public int solution(int num) {
-        char[] numArray = (num + "").toCharArray();
+    public boolean solution(int[] param0) {
+        int endIndex = param0.length - 1;
+        boolean[] vis = new boolean[param0.length]; //DFS의 방문여부를 체크하기 위한 배열
 
-        for (int i = 0; i < numArray.length-1; i++) {
-            int targetIndex = findMaxIndexFromStart(numArray, i);
-            // 바꿀수 있는 숫자를 찾은경우 바꾸고 탐색을 종료합니다.
-            if (targetIndex != i) {
-                char temp = numArray[i];
-                numArray[i] = numArray[targetIndex];
-                numArray[targetIndex] = temp;
-                break;
+        Stack<Integer> stack = new Stack<>();
+        stack.add(0); // 시작점 추가
+        vis[0] = true;
+
+        //DFS
+        while (!stack.isEmpty()) {
+            Integer cur = stack.pop();
+            int value = param0[cur];
+
+            //적힌 값만큼 이동할수 있으므로 (cur + 1) ~ (cur + value) 까지 다음 탐색 범위에 추가
+            for (int next = cur + 1; next <= cur + value; next++) {
+                // 여기에 return true를 해도 괜찮을 것 같아요
+                if (next > endIndex) {
+                    continue;
+                }
+
+                if (vis[next]) continue;
+
+                if (next == endIndex) {
+                    return true;
+                }
+
+                stack.push(next);
+                vis[next] = true;
             }
         }
-
-        String ret = "";
-        for (int i = 0; i < numArray.length; i++) {
-            ret += numArray[i];
-        }
-
-        return Integer.parseInt(ret);
-    }
-    // start보다 index가 크면서 가장 큰 숫자의 인덱스를 반환 해주는 함수 입니다.
-    public int findMaxIndexFromStart(char[] numArray, int start) {
-        int value = numArray[start] - '0';
-        int ret = start;
-
-        for (int i = numArray.length-1; i > start; i--) {
-            if (value < numArray[i] - '0') {
-                value = numArray[i] - '0';
-                ret = i;
-            }
-        }
-
-        return ret;
+        // 탐색을 종료 후에도 도달 할수 없다면 false
+        return false;
     }
 }
