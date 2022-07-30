@@ -13,6 +13,9 @@ import java.util.ArrayList;
  *      해당하는 문자열을 찾아 answer 배열에 차례로 문자열을 더해준다.
  *      문자열을 더해줄 때 마다 " "을 넣어주어 구분을 둔다.
  *      단 맨 마지막 list의 맨 마지막 숫자에는 빈칸을 넣지 않는다.
+ *
+ ***** 추가사항: n이 0만 있는 경우 빈칸으로 출력되는 것을 확인하여
+ *          n == 0 의 경우 출력해주도록 따로 만들었습니다.
  */
 
 public class CodingTest1_김우진 {
@@ -40,6 +43,13 @@ public class CodingTest1_김우진 {
         while (n > 0) {
             list.add(n % 10);
             n /= 10;
+        }
+
+        if(n == 0) {
+            for (int i = 0; i < 5; i++) {
+                answer[i] += numbers[0][i];
+            }
+            return answer;
         }
 
         for (int i = list.size() - 1; i >= 0; i--) {
