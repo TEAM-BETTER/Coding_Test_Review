@@ -11,11 +11,16 @@ import java.util.*;
  * 1,2 | 5,-1| 3,-1| -1,4| -1,-1| -1,-1|
  * 이렇게 만들고 안으로 while 을 이용해 q에 넣고 레벨 오더 순회를 진행해 역순으로 반환을 했지만
  * 테케만 통과되고 다실패했네여 ...
+ * 강사님 강의 듣고.. dfs 하니깐 이렇게 쉽네여....
+ * 저는 visit 배열 만들기싫어서 전 노드를 업데이트 해주었습니다.
  */
 
 class Solution {
+    int[][] tree;
+    List<Integer> answer;
+
     public int[] solution(int N, int[][] left, int[][] right) {
-        int[][] tree = new int[N + 1][2]; // 2중배열
+        tree = new int[N][2]; // 2중배열
         for (int i = 0; i < tree.length; i++) {
             Arrays.fill(tree[i], -1);
         }
@@ -25,35 +30,26 @@ class Solution {
         for (int i = 0; i < right.length; i++) {
             tree[right[i][0]][1] = right[i][1];
         }
-
-        Queue<Integer> q = new LinkedList<>(); // 레벨 오더 트리 순회할 q
-        q.offer(0); // Head 는 무조건 0
-        List<ArrayList<Integer>> list = new ArrayList<>();
-
-        while (!q.isEmpty()) {
-            int n = q.size();
-            ArrayList<Integer> holy = new ArrayList<>();
-            // 현재 레벨을 진행 되는 순서 대로 담을 배열
-            for (int i = 0; i < n; i++) {
-                int cur = q.poll();
-                holy.add(cur); // 현재레벨 값을 추가해 주는부분
-                if (tree[cur][1] != -1) { // 우측
-                    q.add(tree[cur][1]);
-                }
-                if (tree[cur][0] != -1) { // 좌측
-                    q.add(tree[cur][0]);
-                }
-            }
-            list.add(holy); // 현재 레벨을 리스트에 추가
+        while (tree[0][0] != -1 || tree[0][1] != -1) { // 이 while 부분이 없으면 현재 리프 노드 찾고 함수 종료됩니다.
+            helper(0, 0);
         }
-        // 답으로 변환시키는 부분.
-        ArrayList<Integer> an = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = 0; j < list.get(list.size() - 1 - i).size(); j++) {
-                an.add(list.get(list.size() - 1 - i).get(j));
-            }
+        answer.add(0);
+        return answer.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public void helper(int cur, int prev) { // 강사님 dfs 와 다를바 없고 단지 visit 배열만 없네요 ㅎㅎ..
+        if (tree[cur][0] == -1 && tree[cur][1] == -1) {
+            if (tree[prev][0] == cur)
+                tree[prev][0] = -1;
+            else
+                tree[prev][1] = -1;
+            answer.add(cur);
+            return;
         }
 
-        return an.stream().mapToInt(Integer::intValue).toArray();
+        if (tree[cur][1] >= 0)
+            helper(tree[cur][1], cur);
+        if (tree[cur][0] >= 0)
+            helper(tree[cur][0], cur);
     }
 }
