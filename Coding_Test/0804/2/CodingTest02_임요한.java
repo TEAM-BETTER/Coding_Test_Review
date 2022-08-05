@@ -1,5 +1,4 @@
 //단순 String로 정렬하는 방법 외에는 생각나질 않았습니다..
-//사실상 틀린 문제같습니다.
 
 import java.util.Objects;
 import java.util.stream.IntStream;
