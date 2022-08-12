@@ -39,7 +39,6 @@ class Solution4 {
                 bye(arr[i - k + 1]);
             }
         }
-        System.out.println(Arrays.toString(res));
         return res;
     }
 
