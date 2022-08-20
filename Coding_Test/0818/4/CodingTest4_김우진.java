@@ -1,58 +1,37 @@
 package CodingTest13;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * 정확성 : 4 / 시간초과 및 런타임 에러
- *
- * 1. Map 에 edges 배열을 기준으로 key : 이전노드 / value : list 형태로 다음노드를 담아줌
- *
- * 2. func 재귀 -> 도, 개, 걸 나왔을 경우로 재귀
- *             -> 윷, 모 나왔을 경우로 재귀
- *             -> idx 값이 N이 되면 도착지에 도달
+ *  1. Map 에 edges 배열을 기준으로 key : 이전노드 / value : list 형태로 다음노드를 담아줌
+ *      State : idx, cnt를 담고 cnt가 적은 순으로 오름차순 정렬
+ *  2. 항상 출발점인 1번 노드를 초기값으로 pq에 넣고 노드 탐색
+ *      -> 한 번 이동 할 때마다 cnt++,
+ *      -> 도착점에 도착했을 때 cnt는 시작점에서 도착점까지의 최소 길이
+ *      -> 윷놀이에서 모 + 모가 베스트 케이스 (한 턴에 10칸을 이동)
+ *      -> 따라서 시작점 ~ 도착점까지의 최소 길이가 몇 턴만에 이루어졌나를 확인해야함
+ *      -> (시작점에서 도착점까지의 최소 길이 + 10) / 10이 최소 턴수 (시화님 코드 참고 감사합니다 )
  *
  */
+public class CodingTest4 {
 
-public class CodingTest4_김우진 {
+    static final int MAX_DISTANCE_PER_TURN = 10;
 
     static Map<Integer, List<Integer>> graph = new HashMap<>();
 
-    static int answer = Integer.MAX_VALUE;
+    static class State implements Comparable<State> {
+        int idx;
 
-    static void func(int idx, int cnt, int total, boolean repeat, int N) {
-        // 도착점 도착하면 몇 번 굴렸나 업데이트
-        if (idx == N) {
-            answer = Math.min(answer, total);
+        int cnt;
 
-            return;
+        public State(int idx, int cnt) {
+            this.idx = idx;
+            this.cnt = cnt;
         }
 
-        for (Integer next : graph.get(idx)) {
-            // 윷을 다시 돌려야하면
-            if (cnt == 0) {
-
-                // 도 개 걸
-                // next로 한번 움직였으므로 0 1 2
-                // 그 전에 윷, 모였으면 total 1 증가 시키지 않고
-                // 도 개 걸이므로 반복 false
-                for (int i = 0; i <= 2; i++) {
-                    func(next, i, repeat ? total : total + 1, false, N);
-                }
-
-                // 윷 모
-                // 그 전에도 윷 모였으면 repeat false 그 외 true
-                for (int i = 3; i <= 4; i++) {
-                    func(next, i, repeat ? total : total + 1, !repeat, N);
-                }
-
-            } else {
-
-                // 이전에 던진 윷에 의해 움직이므로 total 증가 안하고 cnt만 1 감소
-                func(next, cnt - 1, total, repeat, N);
-            }
+        @Override
+        public int compareTo(State o) {
+            return cnt - o.cnt;
         }
     }
 
@@ -61,22 +40,33 @@ public class CodingTest4_김우진 {
             graph.put(i, new ArrayList<>());
         }
 
-        // 단방향 그래프 그리고
         for (int[] edge : edges) {
             graph.get(edge[0]).add(edge[1]);
         }
 
-        // 1번부터 출발
-        func(1, 0, 0, false, N);
+        PriorityQueue<State> pq = new PriorityQueue<>();
+        pq.add(new State(1, 0));
 
-        return answer;
+        while (!pq.isEmpty()) {
+            State cur = pq.poll();
+
+            if (cur.idx == N) {
+                return (cur.cnt + MAX_DISTANCE_PER_TURN) / MAX_DISTANCE_PER_TURN;
+            }
+
+            for (int next : graph.get(cur.idx)) {
+                pq.add(new State(next, cur.cnt + 1));
+            }
+        }
+
+        return -1;
     }
 
     public static void main(String[] args) {
-        int N = 13;
+        int N = 79;
         int[][] edges = {
-                {1, 2}, {1, 3}, {2, 4}, {2, 5}, {3, 6}, {4, 7}, {5, 7}, {6, 5}
-                , {6, 8}, {7, 9}, {8, 10}, {9, 10}, {10, 11}, {11, 12}, {12, 13}};
+                {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 6}, {6, 7}, {7, 8}, {8, 9}, {9, 10}, {10, 11}, {11, 12}, {12, 13}, {13, 14}, {14, 15}, {15, 16}, {16, 17}, {17, 18}, {18, 19}, {19, 20}, {20, 21}, {21, 22}, {22, 23}, {23, 24}, {24, 25}, {25, 26}, {26, 27}, {27, 28}, {28, 29}, {29, 30}, {30, 31}, {31, 32}, {32, 33}, {33, 34}, {34, 35}, {35, 36}, {36, 37}, {37, 38}, {38, 39}, {39, 40}, {40, 41}, {41, 42}, {42, 43}, {43, 44}, {44, 45}, {45, 46}, {46, 47}, {47, 48}, {48, 49}, {49, 50}, {50, 51}, {51, 52}, {52, 53}, {53, 54}, {54, 55}, {55, 56}, {56, 57}, {57, 58}, {58, 59}, {59, 60}, {60, 61}, {61, 62}, {62, 63}, {63, 64}, {64, 65}, {65, 66}, {66, 67}, {67, 68}, {68, 69}, {69, 70}, {70, 71}, {71, 72}, {72, 73}, {73, 74}, {74, 75}, {75, 76}, {76, 77}, {77, 78}, {78, 79}, {79, 80}
+        };
 
         System.out.println(solution(N, edges));
     }
